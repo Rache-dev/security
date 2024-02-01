@@ -21,7 +21,6 @@ public class Employee {
     @GeneratedValue
     private Long id;
     private String fullName;
-
     private String contactInfo;
     private String position;
     private String department;

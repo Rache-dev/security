@@ -28,14 +28,6 @@ public class ApplicationConfig {
 //        return username -> repository.findByEmail(username)
 //                .orElseThrow(() -> new UsernameNotFoundException("User not Found"));
 //    }
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-//        com.alibou.security.user.User user = repository.findByEmail(username)
-//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-//
-//        return new org.springframework.security.core.userdetails.User(
-//                user.getUsername(), user.getPassword(), new ArrayList<>());
-//    }
     @Bean
     public UserDetailsService userDetailsService(){
         return new UserDetailsService() {

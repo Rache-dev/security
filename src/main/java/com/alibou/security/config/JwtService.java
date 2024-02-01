@@ -18,7 +18,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
     //generating the signInKey
-    private static final String SECRET_KEY = "2a810ba96742548624e61f5a43f22bfa37f2f362e988991f54c676781edd4182";
+    //private static final String SECRET_KEY = "2a810ba96742548624e61f5a43f22bfa37f2f362e988991f54c676781edd4182";
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -30,9 +30,20 @@ public class JwtService {
         return claimResolver.apply(claims);
     }
 
+//    public String generateToken(UserDetails userDetails){
+//        return  generateToken(new HashMap<>(), userDetails);
+//    }
+
     public String generateToken(UserDetails userDetails){
-        return  generateToken(new HashMap<>(), userDetails);
+        return Jwts
+                .builder()
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24)))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
+
 
     //a method that will and can validate a token
     public boolean isTokenValid(String token, UserDetails userDetails){
@@ -49,19 +60,19 @@ public class JwtService {
     }
 
     //a method that will help us generate a token
-    public String generateToken(
-            Map<String, Object> extraClaims,
-            UserDetails userDetails
-    ){
-        return Jwts
-                .builder()
-                .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24)))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-                .compact();
-    }
+//    public String generateToken(
+//            Map<String, Object> extraClaims,
+//            UserDetails userDetails
+//    ){
+//        return Jwts
+//                .builder()
+//                .setClaims(extraClaims)
+//                .setSubject(userDetails.getUsername())
+//                .setIssuedAt(new Date(System.currentTimeMillis()))
+//                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24)))
+//                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+//                .compact();
+//    }
     /** method that takes a JWT token as input,
      * uses the provided signing key to parse and verify the token
      * and the returns the claims contained in the body of the JWT
@@ -76,7 +87,7 @@ public class JwtService {
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode("2a810ba96742548624e61f5a43f22bfa37f2f362e988991f54c676781edd4182");
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }
