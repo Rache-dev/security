@@ -19,7 +19,6 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-
     //regestring a user
     public AuthenticationResponse register(RegisterRequest request) {
         //create user object out of the RegisterRequest, save it to the database and return the token
@@ -28,7 +27,7 @@ public class AuthenticationService {
                 .lastname(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.ADMIN)
+                .role(Role.ADMIN)st
                 .build();
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);

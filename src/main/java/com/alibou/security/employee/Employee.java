@@ -10,18 +10,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table
+@Table(name = "employee")
 public class Employee {
 
     @Id
     @GeneratedValue
     private Long id;
-    private String fullName;
-    private String contactInfo;
+    private String fullname;
+    private String contactinfo;
     private String position;
     private String department;
     private String status;
